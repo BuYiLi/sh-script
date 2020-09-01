@@ -61,7 +61,8 @@ installRedis(){
     wget https://mirrors.huaweicloud.com/redis/redis-5.0.3.tar.gz
   fi
   tar zxvf redis-5.0.3.tar.gz
-  cd redis-5.0.3
+  mv redis-5.0.3 redis
+  cd redis
   make
   rm -rf /usr/bin/redis-server
   ln -s $(pwd)/src/redis-server /usr/bin/redis-server
