@@ -13,7 +13,10 @@ read -p "Please input port(6379)" port
 
 
 redisConf=/usr/local/soft/redis/redis.conf
-cp $redisConf $redisConf.default
+
+if [ ! -f $redisConf.default ];then
+    cp $redisConf $redisConf.default
+fi
 sed -i "s|bind 127.0.0.1|#bind 127.0.0.1|" $redisConf
 sed -i "s|daemonize no|daemonize yes|" $redisConf
 sed -i "s|# requirepass foobared|requirepass $password|" $redisConf
