@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-mkdir -p /usr/local/soft
-cd /usr/local/soft
+home=/usr/local/soft
+mkdir -p $home
+cd $home
 
 if [ -z "`yum list | grep wget`" ];then
   yum install -y wget
@@ -69,6 +70,9 @@ installRedis(){
 }
 
 installJDK
+cd $home
 installNginx
+cd $home
 installMySql
+cd $home
 installRedis
