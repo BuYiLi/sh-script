@@ -10,6 +10,7 @@ if [ -z "`yum list | grep wget`" ];then
 fi
 
 installJDK(){
+  cd $home
   # i586
   #wget https://repo.huaweicloud.com/java/jdk/8u151-b12/jdk-8u151-linux-i586.rpm
   #yum localinstall -y jdk-8u151-linux-i586.rpm
@@ -23,6 +24,7 @@ installJDK(){
 }
 
 installNginx(){
+  cd $home
   yum install -y zlib-devel pcre-devel openssl openssl-devel gcc-c++
   if [ ! -f nginx-1.18.0.tar.gz ];then
     wget https://mirrors.huaweicloud.com/nginx/nginx-1.18.0.tar.gz
@@ -36,6 +38,7 @@ installNginx(){
 }
 
 installMySql(){
+  cd $home
   if [ ! -f mysql57-community-release-el7-8.noarch.rpm ];then
     wget https://repo.mysql.com//mysql57-community-release-el7-8.noarch.rpm
   fi
@@ -57,6 +60,7 @@ installMySql(){
 }
 
 installRedis(){
+  cd $home
   if [ ! -f redis-5.0.3.tar.gz ];then
     wget https://mirrors.huaweicloud.com/redis/redis-5.0.3.tar.gz
   fi
@@ -71,9 +75,6 @@ installRedis(){
 }
 
 installJDK
-cd $home
 installNginx
-cd $home
 installMySql
-cd $home
 installRedis
