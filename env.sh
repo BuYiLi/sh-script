@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+read -p "Please input mysql password(Password123@qq.com)" mysqlPassword
+    if [ -z "$mysqlPassword" ];then
+        mysqlPassword="Password123@qq.com"
+    fi
+
 home=/usr/local/soft
 mkdir -p $home
 cd $home
@@ -50,9 +55,9 @@ installMySql(){
 
   # 修改密码 添加远程连接权限
   mysql --connect-expired-password -u root -p"${initPassword}" -e "
-      SET PASSWORD = PASSWORD('Password123@qq.com');
+      SET PASSWORD = PASSWORD('${mysqlPassword}');
       use mysql;
-      GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'Password123@qq.com' WITH GRANT OPTION;
+      GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${mysqlPassword}' WITH GRANT OPTION;
       flush privileges;
       show databases;
       "
