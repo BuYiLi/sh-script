@@ -72,6 +72,8 @@ installRedis(){
   mv redis-5.0.3 redis
   cd redis
   make
+  rm -rf /usr/bin/redis
+  ln -s $(pwd) /usr/bin/redis
   rm -rf /usr/bin/redis-server
   ln -s $(pwd)/src/redis-server /usr/bin/redis-server
   rm -rf /usr/bin/redis-cli
