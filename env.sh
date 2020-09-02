@@ -75,7 +75,7 @@ installRedis(){
   make
 
   sed -i "/^alias redis=.*$/d" ~/.bashrc
-  echo -e "\nalias redis=$(pwd)" >> ~/.bashrc
+  echo -e "\nalias redis='cd $(pwd)'" >> ~/.bashrc
   source ~/.bashrc
   
   rm -rf /usr/bin/redis-server
