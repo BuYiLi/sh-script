@@ -13,6 +13,7 @@ cd $home
 if [ -z "`command -v wget`" ];then
   yum install -y wget
 fi
+yum install -y zlib-devel pcre-devel openssl openssl-devel gcc-c++
 
 installJDK(){
   cd $home
@@ -29,7 +30,7 @@ installJDK(){
 
 installNginx(){
   cd $home
-  yum install -y zlib-devel pcre-devel openssl openssl-devel gcc-c++
+  
   if [ ! -f nginx-1.18.0.tar.gz ];then
     wget https://mirrors.huaweicloud.com/nginx/nginx-1.18.0.tar.gz
     tar zxvf nginx-1.18.0.tar.gz
@@ -72,8 +73,11 @@ installRedis(){
   mv redis-5.0.3 redis
   cd redis
   make
-  rm -rf /usr/bin/redis
-  ln -s $(pwd) /usr/bin/redis
+
+  sed -i "/^alias redis=.*$/d" ~/.bashrc
+  echo -e "\nalias redis=$(pwd)" >> ~/.bashrc
+  source ~/.bashrc
+  
   rm -rf /usr/bin/redis-server
   ln -s $(pwd)/src/redis-server /usr/bin/redis-server
   rm -rf /usr/bin/redis-cli
