@@ -5,7 +5,7 @@ home=/usr/local/soft
 mkdir -p $home
 cd $home
 
-if [ -z "`yum list | grep wget`" ];then
+if [ -z "`command -v wget`" ];then
   yum install -y wget
 fi
 
@@ -20,7 +20,6 @@ installJDK(){
   wget https://repo.huaweicloud.com/java/jdk/8u151-b12/jdk-8u151-linux-x64.rpm
   fi
   yum localinstall -y jdk-8u151-linux-x64.rpm
-  echo 'JDK install complete!======================================'
 }
 
 installNginx(){
