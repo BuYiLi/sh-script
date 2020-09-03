@@ -28,6 +28,24 @@ installJDK(){
   yum localinstall -y jdk-8u151-linux-x64.rpm
 }
 
+installJDKWithBinary(){
+  if [ ! -f jdk-8u151-linux-x64.tar.gz ];then
+    wget https://repo.huaweicloud.com/java/jdk/8u151-b12/jdk-8u151-linux-x64.tar.gz
+    fi
+
+    tar zxvf jdk-8u151-linux-x64.tar.gz
+    mv jdk1.8.0_151 /usr/local/java
+
+    javaEnvFile=/etc/profile.d/java.sh
+    rm -rf $javaEnvFile
+    content='
+export JAVA_HOME=/usr/local/java
+export PATH=$JAVA_HOME/bin:$PATH
+'
+    $($content)
+    echo -e $content >> $javaEnvFile
+}
+
 installNginx(){
   cd $home
   
@@ -84,7 +102,8 @@ installRedis(){
   ln -s $(pwd)/src/redis-cli /usr/bin/redis-cli
 }
 
-installJDK
+# installJDK
+installJDKWithBinary
 installNginx
 installMySql
 installRedis
