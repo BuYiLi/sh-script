@@ -38,12 +38,11 @@ installJDKWithBinary(){
 
     javaEnvFile=/etc/profile.d/java.sh
     rm -rf $javaEnvFile
-    content='
+    echo -e '
 export JAVA_HOME=/usr/local/java
 export PATH=$JAVA_HOME/bin:$PATH
-'
-    $($content)
-    echo -e $content >> $javaEnvFile
+' >> $javaEnvFile
+    source $javaEnvFile
 }
 
 installNginx(){
@@ -102,7 +101,6 @@ installRedis(){
   ln -s $(pwd)/src/redis-cli /usr/bin/redis-cli
 }
 
-# installJDK
 installJDKWithBinary
 installNginx
 installMySql
