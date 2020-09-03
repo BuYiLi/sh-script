@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
+read -p "Please input mysql password(Password123@qq.com)" mysqlPassword
+    if [ -z "$mysqlPassword" ];then
+        mysqlPassword="Password123@qq.com"
+    fi
+
 home=/usr/local/soft
 mkdir -p $home
 cd $home
@@ -50,11 +55,10 @@ installMySql(){
   # 修改密码 添加远程连接权限
   mysql --connect-expired-password -u root -e "
       use mysql;
-      update user set authentication_string=PASSWORD("${mysqlPassword}") where user='root';
-      update user set plugin="mysql_native_password";
-      GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY "${mysqlPassword}" WITH GRANT OPTION;
+      update user set authentication_string=PASSWORD('${mysqlPassword}') where user='root';
+      update user set plugin='mysql_native_password';
+      GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${mysqlPassword}' WITH GRANT OPTION;
       flush privileges;
-      show databases;
       "
     if [ ! -f /etc/mysql/mysql.conf.d/mysqld.cnf.bak ];then
         cp /etc/mysql/mysql.conf.d/mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf.bak
