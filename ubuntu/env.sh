@@ -8,7 +8,7 @@ cd $home
 if [ -z "`command -v wget`" ];then
   apt install -y wget
 fi
-sudo apt-get install build-essential zlib1g-dev libpcre3 libpcre3-dev  libssl-dev libxslt1-dev libxml2-dev libgd2-xpm-dev libgeoip-dev  libgoogle-perftools-dev libperl-dev libtool libpcrecpp0v5 openssl -y
+apt -y install openssl libssl-dev libpcre3 libpcre3-dev zlib1g-dev g++
 
 installJDK(){
     if [ ! -f jdk-8u151-linux-x64.tar.gz ];then
