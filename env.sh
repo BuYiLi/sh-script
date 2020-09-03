@@ -105,3 +105,7 @@ installJDKWithBinary
 installNginx
 installMySql
 installRedis
+
+echo -e "install JDK complete!!!"
+echo -e "run follow command:"
+echo -e "\t" "source $javaEnvFile"
