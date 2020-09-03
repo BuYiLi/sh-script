@@ -4,6 +4,7 @@ set -e
 configSSH(){
     configFile=/etc/ssh/sshd_config
     sed -i "s|^#PermitRootLogin prohibit-password$|PermitRootLogin yes|" $configFile
+    # sed -i "s|^#PubkeyAuthentication yes$|PubkeyAuthentication yes|" $configFile
     sed -i "s|^#Port 22$|Port 22|" $configFile
     service sshd restart
 }
