@@ -49,9 +49,10 @@ installMySql(){
 
   # 修改密码 添加远程连接权限
   mysql --connect-expired-password -u root -e "
-      SET PASSWORD = PASSWORD('${mysqlPassword}');
       use mysql;
-      GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${mysqlPassword}' WITH GRANT OPTION;
+      update user set authentication_string=PASSWORD("${mysqlPassword}") where user='root';
+      update user set plugin="mysql_native_password";
+      GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY "${mysqlPassword}" WITH GRANT OPTION;
       flush privileges;
       show databases;
       "
@@ -61,6 +62,7 @@ installMySql(){
     if [ ! -f /etc/mysql/conf.d/mysql.cnf.bak ];then
         cp /etc/mysql/conf.d/mysql.cnf /etc/mysql/conf.d/mysql.cnf.bak
     fi
+    sudo sed -i "s|^bind-address|#bind-address|" /etc/mysql/mysql.conf.d/mysqld.cnf
     sudo sed -i "s|^\[mysqld\]$|\[mysqld\]\ncharacter_set_server=utf8|" /etc/mysql/mysql.conf.d/mysqld.cnf
     sudo sed -i "s|^\[mysql\]$|\[mysql\]\ndefault-character-set=utf8|" /etc/mysql/conf.d/mysql.cnf
     service mysql restart
