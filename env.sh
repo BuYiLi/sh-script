@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 set -e
 
-read -p "Please input mysql password(Password123@qq.com)" mysqlPassword
-    if [ -z "$mysqlPassword" ];then
-        mysqlPassword="Password123@qq.com"
-    fi
+defaultMysqlPassword="Password123@qq.com"
+readonly defaultMysqlPassword
+mysqlPassword=""
+
+read_mysql_var(){
+  if [ -z "$mysqlPassword" ];then
+    read -p "Please input mysql password(${defaultMysqlPassword})" mysqlPassword
+      if [ -z "$mysqlPassword" ];then
+          mysqlPassword=${defaultMysqlPassword}
+      fi
+  fi
+}
+
+
 
 home=/usr/local/soft
 mkdir -p $home
@@ -60,6 +70,7 @@ installNginx(){
 }
 
 installMySql(){
+  read_mysql_var
   cd $home
   if [ ! -f mysql57-community-release-el7-8.noarch.rpm ];then
     wget https://repo.mysql.com//mysql57-community-release-el7-8.noarch.rpm
@@ -109,3 +120,51 @@ installRedis
 echo -e "install JDK complete!!!"
 echo -e "run follow command:"
 echo -e "\t" "source $javaEnvFile"
+
+
+env_help() {
+    echo ShadowSocksR python client tool
+    echo -e if you have not installed env, run \`env install\` first
+    echo Usage:
+    echo -e "\t" "env help"
+    echo -e "\n" "Install/Uninstall"
+    echo -e "\t" "env mysql       install mysql"
+    echo -e "\t" "env nginx       install nginx"
+    echo -e "\t" "env redis       install redis"
+    echo -e "\t" "env jdk-bin         install java development kit with binary"
+    echo -e "\t" "env jdk-package         install java development kit with package"
+    echo -e "\n" "Config and Subscribe"
+    echo -e "\t" "env update       update subscription from $WEBSITE"
+    echo -e "\t" "env config       edit config.json"
+    echo -e "\t" "env xclip        paste configs from clipboard to config.json"
+    echo -e "\n" "Start/Stop/Restart"
+    echo -e "\t" "env start        start the shadowsocks service"
+    echo -e "\t" "env stop         stop the shadowsocks service"
+    echo -e "\t" "env restart      restart the shadowsocks service"
+    echo -e "\n" "Testing and Maintenance"
+    echo -e "\t" "env test         get ip from cip.cc using socks5 proxy"
+    echo -e "\t" "env log          cat the log of shadowsocks"
+    echo -e "\t" "env shell        cd into env installation dir"
+    echo -e "\t" "env clean        clean env configuration backups"
+}
+
+env_main() {
+    case $1 in
+        help)           env_help                    ;;
+        mysql)          installMySql                ;;
+        nginx)          installNginx                ;;
+        redis)          installRedis                ;;
+        jdk-bin)        installJDKWithBinary        ;;
+        jdk-package)    installJDK                  ;;
+        start)          env_start                   ;;
+        stop)           env_stop                    ;;
+        restart)        env_restart                 ;;
+        test)           env_test                    ;;
+        log)            env_log                     ;;
+        shell)          env_shell                   ;;
+        clean)          env_clean                   ;;
+        *)              env_help                    ;;
+    esac
+}
+
+env_main $1
